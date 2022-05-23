@@ -1,0 +1,30 @@
+<mat-accordion>
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Die Mische FAQ
+        </mat-panel-title>
+        <mat-panel-description>
+          Hier findest du Antworten auf deine Fragen, wie die Anwendung zu nutzen ist und wie die Funktionsweise ist.
+        </mat-panel-description>
+        <!--<p>This is the primary content of the panel.</p>--> 
+    </mat-expansion-panel-header>
+    </mat-expansion-panel>
+    <mat-expansion-panel (opened)="panelOpenState = true"
+                         (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Funktionsweise
+        </mat-panel-title>
+        <mat-panel-description>
+          {{panelOpenState ? 'Toggle-Slide-Refine' : 'Wofür sind die Toggle am Anfang?'}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <p>An dieser Stelle wählst  du aus, wie deine Mischkultur bestimmt werden soll. <br> Als "Standard" gilt der abgleich von positven und negativen Nachbarschaften, die aus verschiedenen Quellen gesammelt und abgeglichen wurden. <br>Beim "Nährstoffbedarf" wird miteinbezogen, wie viel Nährstoffe die Pflanze braucht. Diese Einteilung geschieht in die Klassen "Starkzehrer", "Mittelzehrer" und "Schwachzehrer".</p>
+      <div class="faq-img">
+        <img class="card-image" src="../../assets/faq_pic_refine.png" alt="Foto von Spezialisierungs Toggle">
+      </div>
+    </mat-expansion-panel>
+   
+  </mat-accordion>
+  

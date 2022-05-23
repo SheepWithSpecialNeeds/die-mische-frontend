@@ -1,0 +1,5 @@
+export enum Nutrient_Requirement {
+    Starkzehrer,
+    Mittelzehrer,
+    Schwachzehrer
+} 

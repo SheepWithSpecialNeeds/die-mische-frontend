@@ -1,0 +1,29 @@
+<div class="container">
+    <h2 class="text-center">Stöbern sie durch meine Crop-Datenbank</h2>
+    <hr>
+    <div class="my-5">
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead *ngIf="crops.length != 0"> <!--Only Display header names when the selectedList isnt empty-->
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Root</th>
+                    <th>Familie</th>
+                    <th>nutr. requirements</th>
+                    <th>Mehr Infos</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let crop of crops">
+                        <td>{{crop.crop_id}}</td>
+                        <td>{{crop.crop_name}}</td>
+                        <td>{{crop.crop_root}}</td>
+                        <td>{{crop.crop_family}}</td>
+                        <td>{{crop.crop_nutrient_requirements}}</td>
+                        <td><button [routerLink]="['/view-crop', crop.crop_id]"><i class="bi bi-three-dots"></i></button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+</div>

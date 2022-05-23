@@ -1,0 +1,34 @@
+label {
+    display: inline-block;
+    text-align: right;
+}
+
+.mat-card-header {
+    justify-content: flex-start
+}
+
+.navbar-dark {background-color:444941 ;}
+
+.mat-form-field#searchbar {
+    
+    position: sticky;
+    top: 10pt;
+    z-index: 999;
+    background-color:white;
+    
+    
+}
+
+
+.mat-select{
+    z-index: 9999;
+    
+}
+.mat-tab-header{background-color: #C6D57E;}
+.mat-slide-toggle{margin-right: 8%;}
+.refine-option {
+    background-color:rgba(0, 0, 0, 0.04);
+    padding-top:10px;
+    padding-bottom: 10px;
+    padding-left:10px ;
+}

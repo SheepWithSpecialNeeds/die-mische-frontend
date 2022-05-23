@@ -1,0 +1,30 @@
+.dashboard-card{ 
+    float:left;
+    height: 30%;
+    width: 30%;
+}
+.card-image{
+height: 100%;
+width: 100%;
+}
+.back-btn{
+    float: left;
+    
+}
+.back-btn:hover {
+    color: #2e36ab;
+}
+.mat-raised-button.mat-primary:hover{
+    color: #2e36ab;
+}
+.mat-raised-button.mat-primary{
+    float:right;
+    
+}
+.mat-progress-bar{ 
+    height: 20px;
+    
+}
+.crop-title{
+    margin-left: 37%;
+}

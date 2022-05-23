@@ -1,0 +1,20 @@
+nav li {
+    display: flex;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+  }
+
+.custom-heading {
+    width: 50%;
+    
+}
+.navbar-custom {
+    background-color: #c6d57e;
+    position: sticky;
+}
+.navbar-brand, .navbar-text {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: black;
+}

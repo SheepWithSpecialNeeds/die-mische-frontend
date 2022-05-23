@@ -1,0 +1,63 @@
+<div class="my-5">
+    <h2 class="crop-title mt-2"> {{ crop.crop_name }} <i class="bi bi-flower1" style="color: green;"></i></h2>
+   <div class="div-1">
+    <a [routerLink]="['/crop']"class="back-btn btn">ZURÜCK</a> <!--Quelle https://nils-mehlhorn.de/posts/angular-navigate-back-previous-page -->
+    
+    <div class="dashboard-card">
+        <img class="card-image" src="../../assets/crops/crop_{{crop.crop_id}}.jpg" alt="Foto von {{crop.crop_name}}">
+    </div>
+    <div>
+        Lorem ipsum dolor sit amet, vix summo tempor corrumpit id, pri habeo impetus no. Dolore senserit mei ea, ei pri malis legendos oportere, populo utroque vel ea. At nam alii adipisci, his dicant soluta persequeris ne. Ut cum meis reque impetus, probo omnes sit id. Soleat suscipit luptatum cu his, vis labore omnesque ad. Agam timeam salutandi quo an, debet laudem ex sea.
+Ut usu rebum prodesset, et mel melius molestie. Graeco option scripta cu sit, his id legere minimum perpetua. Ex vel suas aeque intellegat. Utroque verterem iracundia mea an, te usu clita animal pertinacia, te ius quot persius sapientem. Qui fabulas molestiae id, vix virtute detracto ut, an choro probatus tincidunt mei. Mel no etiam regione.
+    </div>
+
+
+    <h4>Filter deine Liste</h4>
+<mat-form-field  appearance="fill" >
+  <mat-label>Sorte</mat-label>
+  <mat-select >
+      <!--TODO: First Value selected-->
+    <mat-option se value="crop_kind">
+        Green Grape
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<a mat-raised-button class="selcect-btn" color="primary" (click)="addCrop()">Hinzufügen</a>
+</div>
+   
+<div class="seasons">
+<p>Anzucht <mat-progress-bar mode="determinate" value="40"></mat-progress-bar></p>
+<br>
+<p>Pflanzung <mat-progress-bar mode="determinate" value="60"></mat-progress-bar></p>
+<br>
+<p>Ernte <mat-progress-bar mode="determinate" value="30"></mat-progress-bar></p>
+
+</div>
+
+    
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead *ngIf="crop.crop_id > -1"> <!--Only Display header names when the selectedList isnt empty-->
+                <th>Id</th>
+                <th>Name</th>
+                <th>Root</th>
+                <th>Familie</th>
+                <th>Nährstoffbedarf</th>
+                <th>Mehr Infos</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><button class="tablebutton"  >{{crop.crop_id}}</button></td>
+                    <td><button class="tablebutton"  >{{crop.crop_name}}</button></td>
+                    <td><button class="tablebutton"  >{{crop.crop_root}}</button></td>
+                    <td><button class="tablebutton"  >{{crop.crop_family}}</button></td>
+                    <td><button class="tablebutton"  >{{crop.crop_nutrient_requirements}}</button></td>
+                    
+                    <td><button class="tablebutton"  [routerLink]="['/view-crop', crop.crop_id]"><i class="bi bi-three-dots"></i></button></td>
+                </tr>
+            </tbody>
+        </table>
+        
+    </div>
+    
+</div>

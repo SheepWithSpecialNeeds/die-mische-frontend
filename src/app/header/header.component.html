@@ -1,0 +1,26 @@
+<nav class="navbar navbar-expand-sm  sticky-top navbar-custom">
+    <div class="container justify-content-center">
+        <ul class="nav navbar-nav mx-2">
+            <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                <a class=" navbar-text" [routerLink]="['/browse']">Stöbern</a>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav mx-2">
+            <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+                <a class=" navbar-text" [routerLink]="['/faq']">FAQ</a>
+            </li>
+        </ul>
+        <a class="navbar-brand mx-5" href="#"> Die Mische</a>
+        <ul class="nav navbar-nav">
+            <li class="nav-item">
+                <a class="navbar-text mx-2" href="#">Über mich</a>
+            </li>
+        </ul>
+        <ul class="nav navbar-nav">
+            <li class="nav-item">
+                <a class="navbar-text mx-2" href="#">Impressum</a>
+            </li>
+        </ul>
+
+    </div>
+</nav>

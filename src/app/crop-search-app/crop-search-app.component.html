@@ -1,0 +1,185 @@
+<div class= "container" >
+    <div class="d-flex justify-content-between align-items-start" *ngIf="this.selectedCrops.length > 0">
+        
+        
+        <div class="p-2" *ngIf="selectedCrops.length > 0">
+            <button type="button" mat-flat-button color="link" class="" (click)="debugView = !debugView">Debug View</button>
+            
+        </div>
+    </div>
+    <h1 class="mb-4 text-center">Einfach Pflanzenpartner finden!</h1>
+    <h2 class="mb-4 text-center" *ngIf="this.selectedCrops.length <= 0">Suche nach einer Pflanze oder wähle direkt eine aus.</h2>
+    
+    <div class="toggle-option" *ngIf="this.selectedCrops.length <= 0">
+        <h4 class="mb-4">Soll die Bestimmung der Nachbarschaftsverhältnisse spezialisiert werden?</h4>
+        <p>Die folgenden Optionen stehen dir zur Auswahl:</p>
+        <mat-slide-toggle [(ngModel)]="default_toggle" [disabled]="nutrient_refine_toggle == false">Standard</mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="nutrient_refine_toggle" (toggleChange)="default_toggle = true" >Nährstoffbedarf</mat-slide-toggle>
+        <mat-slide-toggle type="submit">Standort</mat-slide-toggle>
+        <!--For the variety-specific enhancement of the prototyp -->
+        <mat-slide-toggle type="submit">Wasserbedarf</mat-slide-toggle>
+        <mat-slide-toggle type="submit">Wurzlung</mat-slide-toggle>
+        <!--</form>--> 
+    </div>
+    <br>
+    
+    <!--SEARCH BAR
+    -> Here the database can be searched and the selection is displayed in the search bar.
+    -->
+    <div class="d-flex align-content-center">
+        <div class="p-2 flex-fill ">
+            <mat-form-field style="width: 100%;" appearance="fill" id="searchbar">
+                <mat-chip-list #chipList aria-label="Crop Selection">
+                    <mat-chip *ngFor="let crop of selectedCrops" (removed)="removeCropFromSelection(crop.crop_id)">
+                        {{ crop.crop_name }}
+                        <div *ngIf="nutrient_refine_toggle == true || debugView == true">
+                            {{ "| "+ crop.crop_nutrient_requirements }}
+                        </div>
+                        <button matChipRemove>
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </mat-chip>                   
+                    <input 
+                    placeholder="Tomate..."
+                    #cropInput
+                    (input)="applySearchExpressionToLists()"
+                    [formControl]="cropControl"
+                    [matChipInputFor]="chipList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    (matChipInputTokenEnd)="addCropToSelectionByInput($event)">  
+                </mat-chip-list>
+            </mat-form-field>
+        </div>
+        <div class="p-2" *ngIf="selectedCrops.length > 0">
+            <button type="button" mat-flat-button color="warn" (click)="resetAllLists()">Zurücksetzen</button>
+        </div>
+    </div>
+<!--FILTER-->
+    <h4>Filter deine Liste</h4>
+<mat-form-field  appearance="fill" >
+  <mat-label>Familie</mat-label>
+  <mat-select (selectionChange)="triggerFilter( $event.value, 'family' )">
+    <mat-option  *ngFor="let crop_family of fFilter" [value]="crop_family.value">
+      {{crop_family.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field  appearance="fill" class="mx-2">
+  <mat-label>Nährstoffbedarf</mat-label>
+  <mat-select  (selectionChange)="triggerFilter( $event.value, 'nutrients_requirment' )">
+    <mat-option *ngFor="let crop_nutrient_requirements of nFilter" [value]="crop_nutrient_requirements.value">
+      {{crop_nutrient_requirements.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<!--Results output-->
+    <div *ngIf="this.selectedCrops.length <= 0" [@inOutAnimation]>
+        <div class="row row-cols-1 row-cols-md-6 g-4 mx-0  my-2">
+            <div *ngFor="let crop of undefinedN">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title mb-0">{{crop.crop_name}}</h2>
+                    </div>
+                    <img class="card-image-top" src="../../assets/crops/crop_{{crop.crop_id}}.jpg" alt="Foto von {{crop.crop_name}}">
+                    <div class="card-body" *ngIf="nutrient_refine_toggle == true || debugView == true">
+                        {{crop.crop_nutrient_requirements}}
+                    </div>
+                    <div class="card-footer d-flex justify-content-between">
+                        <button  (click)="addCropToSelection( crop.crop_id )" mat-raised-button color="primary">Hinzufügen</button>
+                        <button [routerLink]="['/view-crop', crop.crop_id]" mat-icon-button color="link" class="px-1 card-container-right"><mat-icon>info</mat-icon></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <mat-tab-group mat-stretch-tabs [backgroundColor]="'primary'" [color]="'accent'" [(selectedIndex)]="selectedIndex" *ngIf="this.selectedCrops.length > 0" [@inOutAnimation]>
+        <mat-tab label="Positive Nachbarn">
+            <div class="row row-cols-1 row-cols-md-6 g-4 mx-0 my-2">
+                <div *ngFor="let crop of positiveN">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title mb-0">{{crop.crop_name}}</h2>
+                        </div>
+                        <img class="card-image-top" src="../../assets/crops/crop_{{crop.crop_id }}.jpg" alt="Foto von {{crop.crop_name}}">
+                        <div class="card-body" *ngIf="nutrient_refine_toggle == true || debugView == true">
+                            {{crop.crop_nutrient_requirements}}
+                        </div>
+                        <div class="card-footer d-flex justify-content-between">
+                            <button  (click)="addCropToSelection( crop.crop_id )" mat-raised-button color="primary" class="">Hinzufügen</button>
+                            <button [routerLink]="['/view-crop', crop.crop_id]" mat-icon-button color="link" class="px-1 card-container-right"><mat-icon>info</mat-icon></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Undefiniertes Verhältnis" >
+            <div class="container">
+                <div class="row row-cols-1 row-cols-md-6 g-4 mx-0  my-2">
+                    <div *ngFor="let crop of undefinedN">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title mb-0">{{crop.crop_name}}</h2>
+                            </div>
+                            <img class="card-image-top" src="../../assets/crops/crop_{{crop.crop_id}}.jpg" alt="Foto von {{crop.crop_name}}">
+                            <div class="card-body" *ngIf="nutrient_refine_toggle == true || debugView == true">
+                                {{crop.crop_nutrient_requirements}}
+                            </div>
+                            <div class="card-footer d-flex justify-content-between">
+                                <button  (click)="addCropToSelection( crop.crop_id )" mat-raised-button color="warn" class="">Hinzufügen</button>
+                                <button [routerLink]="['/view-crop', crop.crop_id]" mat-icon-button color="link" class="px-1 card-container-right"><mat-icon>info</mat-icon></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Negative Nachbarn">
+            <div class="container">
+                <div class="row row-cols-1 row-cols-md-6 g-4 mx-0  my-2">
+                    <div *ngFor="let crop of negativeN">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title mb-0">{{crop.crop_name}}</h2>
+                            </div>
+                            <img class="card-image-top" src="../../assets/crops/crop_{{crop.crop_id}}.jpg" alt="Foto von {{crop.crop_name}}">
+                            <div class="card-body" *ngIf="nutrient_refine_toggle == true || debugView == true">
+                                {{crop.crop_nutrient_requirements}}
+                            </div>
+                            <div class="card-footer d-flex justify-content-between">
+                                <button  (click)="addCropToSelection( crop.crop_id )" mat-raised-button color="primary" class="" disabled>Hinzufügen</button>
+                                <button [routerLink]="['/view-crop', crop.crop_id]" mat-icon-button color="link" class="px-1 card-container-right"><mat-icon>info</mat-icon></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Aktuelle Auswahl">
+            <div class="mx-0 my-2">
+                <table class="table table-striped">
+                    <thead *ngIf="selectedCrops.length != 0"> <!--Only Display header names when the selectedList isnt empty-->
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Wurzlung</th>
+                        <th>Familie</th>
+                        <th>nutr. requirements</th>
+                        <th>Mehr Infos</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let crop of selectedCrops">
+                            <td>{{crop.crop_id}}</td>
+                            <td>{{crop.crop_name}}</td>
+                            <td>{{crop.crop_root}}</td>
+                            <td>{{crop.crop_family}}</td>
+                            <td>{{crop.crop_nutrient_requirements}}</td>
+                            <td><button class="tablebutton"  [routerLink]="['/view-crop', crop.crop_id]"><i class="bi bi-three-dots"></i></button></td>
+                            <td><button class="tablebutton" (click)="removeCropFromSelection(crop.crop_id)" ><i class="bi bi-trash3"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+    {{ message }}
+</div>
